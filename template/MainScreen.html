@@ -1,0 +1,24 @@
+<script id="tmpl-MainScreen" type="text/html">
+<div class="mainScreen">
+    <div class="mainScreen-main">
+        <div>
+            <input name="tagName"/>
+            <button class="btn btnAdd">Add</button>
+        </div>
+        <div class="list">
+        </div>    
+    </div>
+</div>
+</script>
+
+<script id="tmpl-listItem" type="text/html">
+<div class="listItem" data-obj_type="tag" data-obj_id="${id}">
+    <span class="name">${name}</span>
+    <span><button class="btn btnEdit">Edit</button></span>
+    <span><button class="btn btnDelete">Delete</button></span>
+</div>
+</script>
+
+<script id="tmpl-listItemEdit" type="text/html">
+    <input name="editName" value="${name}"/>
+</script>
