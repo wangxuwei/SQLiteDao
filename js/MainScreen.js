@@ -38,6 +38,10 @@
 			var tag = {};
 			tag.name = name;
 			if(name != ""){
+				//FIXME
+//				brite.dm.invoke("createAll","tag",[tag,tag]).done(function(){
+//					c.refresh();
+//				});
 				brite.dm.create("tag",tag).done(function(){
 					c.refresh();
 				});
