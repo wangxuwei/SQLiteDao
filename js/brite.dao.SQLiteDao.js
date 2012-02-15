@@ -244,47 +244,52 @@
 	 * The DAO resolve with the newly created data.
 	 *
 	 * @param {String} objectType
-	 * @param {Object} data
+	 * @param {Array} array of data
 	 */
 	SQLiteDao.prototype.createAll = function(objectType, objs){
 		//FIXME
-//		var dao = this;
-//		var dfd = $.Deferred();
-//		var returnArray = [];
-//		_SQLiteDb.transaction(function(transaction){
-//			for(var i = 0; i < objs.length; i++){
-//				
-//				var data = objs[i];
-//				var insSql = "INSERT INTO " + dao._tableName + " (";
-//				var idx = 0;
-//				var values = "";
-//				var valuesArray = [];
-//				for(var k in data){
-//					if(idx > 0){
-//						insSql += ",";
-//						values += ",";
-//					}
-//					insSql += k;
-//					values += "?";
-//					valuesArray.push(data[k]);
-//					idx++;
-//				}
-//
-//				insSql += " ) VALUES (" + values + ");";
-//				transaction.executeSql(insSql, valuesArray,function(transaction, results){
-//					console.log(2);
-//					var obj = $.extend({},data);
-//					obj.id = results.insertId;
-//					returnArray.push(obj);
-//				});
-//			}
-//			
-//			
-//		});
-//		console.log(1);
-//		console.log(returnArray);
-//		dfd.resolve(returnArray);
-//		return dfd.promise();
+		var dao = this;
+		var dfd = $.Deferred();
+		var returnArray = [];
+		_SQLiteDb.transaction(function(transaction){
+			for(var i = 0; i < objs.length; i++){
+				
+				var data = objs[i];
+				var insSql = "INSERT INTO " + dao._tableName + " (";
+				var idx = 0;
+				var values = "";
+				var valuesArray = [];
+				for(var k in data){
+					if(idx > 0){
+						insSql += ",";
+						values += ",";
+					}
+					insSql += k;
+					values += "?";
+					valuesArray.push(data[k]);
+					idx++;
+				}
+
+				insSql += " ) VALUES (" + values + ");";
+				if(i < objs.length - 1){
+					transaction.executeSql(insSql, valuesArray,function(transaction, results){
+						var obj = $.extend({},data);
+						obj.id = results.insertId;
+						returnArray.push(obj);
+					});
+				}else{
+					transaction.executeSql(insSql, valuesArray,function(transaction, results){
+						var obj = $.extend({},data);
+						obj.id = results.insertId;
+						returnArray.push(obj);
+						dfd.resolve(returnArray);
+					});
+				}
+			}
+			
+			
+		});
+		return dfd.promise();
 	}
 	
 	// -------- /Custom Interface Implementation --------- //
